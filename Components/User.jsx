@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const User = () => {
 
-  const [user, setUser] = useState({
-    name: "",
-    gender: ""
-  })
+  const [user, setUser] = useState({})
   const url = 'https://randomuser.me/api/'
 
   useEffect(()=>{
@@ -13,18 +10,22 @@ const User = () => {
       .then(response => response.json())
       .then((data) =>{
         console.log(data);
-        const name = `${data.results[0].name.title} ${data.results[0].name.first} ${data.results[0].name.last}`
-        const gender = data.results[0].gender
-        setUser({...user, name});
-        // setUser({...user, gender});
+        setUser(data.results[0]);
       })
   },[])
 
-  console.log(user);
   return (
     <div>
-      <h2>{user.name}</h2>
-      {/* <h2>{user.gender}</h2> */}
+      {user.name
+        ? 
+          <>
+            <h2>{user.name.title} {user.name.first} {user.name.last}</h2>
+            <img src={user.picture.large} alt="" />
+            <p>age: {user.dob.age}</p>
+            <p>gender: {user.gender}</p>
+          </>
+        : 'Cargando....'
+      }
     </div>
   )
 }
